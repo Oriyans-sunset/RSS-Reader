@@ -11,13 +11,16 @@ function LoginScreen({ navigation }) {
 
   async function handleLogin() {
     try {
-      const response = await fetch("http://192.168.1.51:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "https://rss-reader-backend.onrender.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       // Handle the response from your backend here
       // For example, you can check the response status and navigate to another screen if successful
@@ -35,13 +38,16 @@ function LoginScreen({ navigation }) {
 
   async function handleRegister() {
     try {
-      const response = await fetch("http://192.168.1.51:3000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "https://rss-reader-backend.onrender.com/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       // Handle the response from your backend here
       // For example, you can check the response status and navigate to another screen if successful
