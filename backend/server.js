@@ -42,6 +42,10 @@ app.post("/login", passport.authenticate("local"), async (req, res) => {
   res.status(200).send("Login successful");
 });
 
+app.get("/login", async (req, res) => {
+  res.send("Login page");
+});
+
 app.listen(3000, () => {
   console.log("Server is running at port 3000");
 });
