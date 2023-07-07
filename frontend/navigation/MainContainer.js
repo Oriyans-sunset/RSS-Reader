@@ -21,7 +21,7 @@ export default function MainContainer() {
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: true }}
         />
       </Stack.Navigator>
     </NavigationContainer>

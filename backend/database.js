@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   password: String,
+  websites: [],
 });
 
 exports.User = mongoose.model("User", userSchema);

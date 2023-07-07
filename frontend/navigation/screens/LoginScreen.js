@@ -1,35 +1,52 @@
 import * as React from "react";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, View, ImageBackground, Text } from "react-native";
 import { colours } from "../../assets/colours";
-import { Text, TextInput, Button } from "react-native-paper";
+import { TextInput, Button } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomButton from "../../component/button";
 
 function LoginScreen({ navigation }) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
+  const [isLoading, setLoading] = React.useState(false);
+
   const image = require("../../assets/images/login-background.jpg");
+
+  useEffect(() => {
+    async function checkIfLoggedIn() {
+      const token = await AsyncStorage.getItem("token");
+      if (token) {
+        // Token exists, navigate to home screen
+        //navigation.navigate("Home");
+      }
+    }
+    checkIfLoggedIn();
+  }, []);
 
   async function handleLogin() {
     try {
-      const response = await fetch(
-        "https://rss-reader-backend.onrender.com/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      setLoading(true);
+      const response = await fetch("http://192.168.1.7:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-      // Handle the response from your backend here
-      // For example, you can check the response status and navigate to another screen if successful
       if (response.ok) {
-        console.log("Login successful.");
+        const data = await response.json();
+        const token = data.token;
+        console.log("Login successful.", token);
+        await AsyncStorage.setItem("token", token);
         navigation.navigate("Home");
+        setLoading(false);
       } else {
         // Handle authentication error
         console.log("Login failed.");
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -38,25 +55,28 @@ function LoginScreen({ navigation }) {
 
   async function handleRegister() {
     try {
-      const response = await fetch(
-        "https://rss-reader-backend.onrender.com/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      setLoading(true);
+      const response = await fetch("http://192.168.1.7:3000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
       // Handle the response from your backend here
       // For example, you can check the response status and navigate to another screen if successful
       if (response.ok) {
+        const data = await response.json();
+        const token = data.token;
         console.log("Registration successful.");
+        await AsyncStorage.setItem("token", token);
         navigation.navigate("Home");
+        setLoading(false);
       } else if (response.status === 400) {
         // Handle authentication error
         console.log("User already exists.");
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -67,42 +87,63 @@ function LoginScreen({ navigation }) {
     <View style={styles.mainContainer}>
       <ImageBackground source={image} style={styles.image}>
         <View style={styles.formBox}>
-          <Text variant="displayMedium">Welcome To {"\n"} RSS Reader</Text>
+          <Text style={{ fontSize: 40, fontFamily: "lobster" }}>
+            Welcome To {"\n"} RSS Reader
+          </Text>
           <View style={styles.inputBox}>
             <TextInput
-              placeholder="Username/Email"
-              placeholderTextColor={"black"}
-              backgroundColor={colours.blue}
-              borderRadius={11}
-              underlineColor={colours.white}
+              label={
+                <Text style={{ fontFamily: "notoSerif" }}>
+                  Enter Email/Username
+                </Text>
+              }
               value={username}
-              onChangeText={(username) => setUsername(username)}
-            ></TextInput>
-            <TextInput
-              placeholder="Password"
-              backgroundColor={colours.blue}
-              borderRadius={11}
+              onChangeText={setUsername}
               mode="flat"
-              underlineColor={colours.white}
-              placeholderTextColor={"black"}
+              underlineStyle={{ width: 0 }}
+              style={{
+                backgroundColor: colours.white,
+                marginBottom: 10,
+                borderRadius: 10,
+              }}
+              theme={{
+                colors: {
+                  primary: colours.blue,
+                },
+              }}
+            />
+            <TextInput
+              label={
+                <Text style={{ fontFamily: "notoSerif" }}>Enter Password</Text>
+              }
               value={password}
-              onChangeText={(password) => setPassword(password)}
-            ></TextInput>
-            <Button
-              buttonColor={colours.darkBlue}
-              mode="contained"
+              onChangeText={setPassword}
+              mode="flat"
+              underlineStyle={{ width: 0 }}
+              secureTextEntry
+              style={{
+                backgroundColor: colours.white,
+                marginBottom: 10,
+                borderRadius: 10,
+              }}
+              theme={{
+                colors: {
+                  primary: colours.blue,
+                },
+              }}
+            />
+            <CustomButton
               onPress={handleLogin}
-            >
-              <Text variant="titleMedium">Log In</Text>
-            </Button>
-
-            <Button
-              buttonColor={colours.darkBlue}
-              mode="contained"
+              label="Login"
+              isLoading={isLoading}
+              colour={colours.yellow}
+            />
+            <CustomButton
               onPress={handleRegister}
-            >
-              <Text variant="titleMedium">Register</Text>
-            </Button>
+              label="Register"
+              isLoading={isLoading}
+              colour={colours.darkBlue}
+            />
           </View>
         </View>
       </ImageBackground>
@@ -125,7 +166,7 @@ const styles = StyleSheet.create({
   },
   formBox: {
     backgroundColor: colours.white,
-    opacity: 0.8,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
     width: "82%",
     height: "70%",
     padding: 10,

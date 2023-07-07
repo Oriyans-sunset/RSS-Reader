@@ -1,9 +1,14 @@
 export const colours = {
   black: "#000000",
   white: "#ffffff",
-  black: "#4a4e4d ",
+  offwhite: "#FAF9F6",
+  grey: "#919191",
+  lightBeige: "#faf8f5",
+  almostBlack: "#4a4e4d",
   darkBlue: "#0e9aa7",
   blue: "#3da4ab",
-  yello: "#f6cd61",
+  yellow: "#f6cd61",
   peach: "#fe8a71",
 };
+
+//#fff8e7 ligh beig alternative

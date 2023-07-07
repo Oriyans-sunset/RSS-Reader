@@ -1,0 +1,32 @@
+{
+  "name": "react-native-rss-parser",
+  "version": "1.5.1",
+  "description": "React Native compatible package to parse RSS feeds",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jameslawler/react-native-rss-parser.git"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "rss",
+    "parser"
+  ],
+  "author": "James Lawler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jameslawler/react-native-rss-parser/issues"
+  },
+  "homepage": "https://github.com/jameslawler/react-native-rss-parser#readme",
+  "dependencies": {
+    "xmldom": "^0.3.0"
+  },
+  "devDependencies": {
+    "jest": "^26.4.2",
+    "prettier": "^2.1.2"
+  }
+}
