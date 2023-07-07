@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   StatusBar,
+  RefreshControl,
 } from "react-native";
 import { colours } from "../../assets/colours";
 import {
@@ -28,34 +29,45 @@ export default function HomeScreen({ navigation }) {
   const [visible, setVisible] = React.useState(false);
   const [website, setWebsite] = React.useState("");
   const [listData, setListData] = React.useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
+  function getWebsites() {
+    if (refreshing) {
+      setTimeout(2000);
+    }
+
+    AsyncStorage.getItem("token")
+      .then((token) => {
+        fetch("http://192.168.1.7:3000/websites", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            setListData(data);
+            setRefreshing(false);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error retrieving token:", error);
+      });
+  }
+  const onRefresh = () => {
+    setRefreshing(true);
+    getWebsites();
+  };
   useEffect(() => {
     console.log("use effect called");
-    function getWebsites() {
-      AsyncStorage.getItem("token")
-        .then((token) => {
-          fetch("http://192.168.1.7:3000/websites", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Network response was not ok");
-              }
-              return response.json();
-            })
-            .then((data) => {
-              setListData(data);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        })
-        .catch((error) => {
-          console.error("Error retrieving token:", error);
-        });
-    }
+
     getWebsites();
   }, [website]);
 
@@ -144,8 +156,12 @@ export default function HomeScreen({ navigation }) {
         </Appbar.Header>
         <FlatList
           padding={10}
+          marginTop={2}
           marginBottom={5}
           data={listData}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => console.log("Pressed")}>
               <List.Item
