@@ -31,7 +31,7 @@ function LoginScreen({ navigation }) {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://rss-reader-backend.onrender.com:3000/login",
+        "https://rss-reader-backend.onrender.com/login",
         {
           method: "POST",
           headers: {
@@ -62,7 +62,7 @@ function LoginScreen({ navigation }) {
     try {
       setLoading(true);
       const response = await fetch(
-        "https://rss-reader-backend.onrender.com:3000/register",
+        "https://rss-reader-backend.onrender.com/register",
         {
           method: "POST",
           headers: {
