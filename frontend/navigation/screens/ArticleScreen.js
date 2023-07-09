@@ -4,6 +4,7 @@ import { WebView } from "react-native-webview";
 import { colours } from "../../assets/colours";
 import { FAB } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import LottieView from "lottie-react-native"; // Import LottieView
 
 export default function ArticleScreen({ route }) {
   const { url } = route.params;
@@ -11,7 +12,19 @@ export default function ArticleScreen({ route }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <WebView source={{ uri: url }} style={styles.webView} />
+      <WebView
+        source={{ uri: url }}
+        style={styles.webView}
+        renderLoading={() => (
+          <LottieView
+            source={require("../../assets/animations/loading-animation.json")}
+            backgroundColor={colours.lightBlue}
+            autoPlay
+            loop
+          />
+        )}
+        startInLoadingState
+      />
       <FAB
         icon="arrow-left"
         style={styles.fab}

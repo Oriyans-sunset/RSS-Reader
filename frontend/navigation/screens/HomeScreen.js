@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
+  SafeAreaView,
   ImageBackground,
   FlatList,
   Text,
@@ -131,7 +132,7 @@ export default function HomeScreen({ navigation }) {
   } else {
     return (
       <PaperProvider>
-        <View style={styles.MainContainer}>
+        <View edges={["top"]} style={styles.MainContainer}>
           <StatusBar barStyle="dark-content" />
           <Appbar.Header
             style={{
@@ -202,7 +203,11 @@ export default function HomeScreen({ navigation }) {
                   left={() => (
                     <Avatar.Image
                       resizeMode="contain"
-                      source={{ uri: item.icon }}
+                      source={{
+                        uri: item.icon
+                          ? item.icon
+                          : "https://www.freeiconspng.com/uploads/no-image-icon-4.png",
+                      }}
                       size={45}
                     />
                   )}

@@ -23,7 +23,8 @@
     "react-native-paper": "^5.9.1",
     "react-native-rss-parser": "^1.5.1",
     "lottie-react-native": "5.1.4",
-    "react-native-webview": "11.26.0"
+    "react-native-webview": "11.26.0",
+    "expo-web-browser": "~12.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
