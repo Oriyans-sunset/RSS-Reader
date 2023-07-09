@@ -28,13 +28,16 @@ function LoginScreen({ navigation }) {
   async function handleLogin() {
     try {
       setLoading(true);
-      const response = await fetch("http://192.168.1.7:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "https://rss-reader-backend.onrender.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -56,13 +59,16 @@ function LoginScreen({ navigation }) {
   async function handleRegister() {
     try {
       setLoading(true);
-      const response = await fetch("http://192.168.1.7:3000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "https://rss-reader-backend.onrender.com/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       // Handle the response from your backend here
       // For example, you can check the response status and navigate to another screen if successful
