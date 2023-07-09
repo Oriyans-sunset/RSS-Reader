@@ -9,6 +9,7 @@ export const colours = {
   blue: "#3da4ab",
   yellow: "#f6cd61",
   peach: "#fe8a71",
+  lightBlue: "#a9e8f5",
 };
 
 //#fff8e7 ligh beig alternative

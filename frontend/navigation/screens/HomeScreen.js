@@ -36,7 +36,7 @@ export default function HomeScreen({ navigation }) {
   function getWebsites() {
     AsyncStorage.getItem("token")
       .then((token) => {
-        fetch("https://rss-reader-backend.onrender.com:3000/websites", {
+        fetch("https://rss-reader-backend.onrender.com/websites", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -88,7 +88,7 @@ export default function HomeScreen({ navigation }) {
       .then((token) => {
         console.log(token);
         console.log(website);
-        fetch("http://192.168.1.8:3000/websites", {
+        fetch("https://rss-reader-backend.onrender.com/websites", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -117,14 +117,13 @@ export default function HomeScreen({ navigation }) {
       });
   }
   function openFeed(item) {
-    console.log(item.url, "hello");
     navigation.navigate("Feed", { url: item.url, name: item.name });
   }
   if (animation) {
     return (
       <LottieView
         source={require("../../assets/animations/loading-animation.json")}
-        backgroundColor="#a9e8f5"
+        backgroundColor={colours.lightBlue}
         autoPlay
         loop
       />

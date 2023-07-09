@@ -41,7 +41,7 @@ export default function FeedScreen({ route, navigation }) {
           url: url,
         };
 
-        fetch("http://192.168.1.8:3000/articles", {
+        fetch("https://rss-reader-backend.onrender.com/articles", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
