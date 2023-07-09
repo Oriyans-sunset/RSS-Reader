@@ -122,12 +122,18 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
   }
 });
 
+app.put("/websites", ensureAuthenticated, async (req, res) => {
+  const user = await User.findOne({ username: "Abr" });
+  const { website } = req.body;
+
+  user["websites"].push(website);
+  await user.save();
+  res.status(200).json("Website added successfully.");
+});
+
 app.post("/articles", async (req, res) => {
   try {
-    console.log(req.body.url);
-
     let response = [];
-
     try {
       const feed = await getRSSFeed(req.body.url);
       for (let i = 0; i < feed.items.length; i++) {
@@ -150,16 +156,6 @@ app.post("/articles", async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
-});
-
-app.put("/websites", ensureAuthenticated, async (req, res) => {
-  const user = await User.findOne({ username: "Abr" });
-  const { website } = req.body;
-  console.log(website);
-
-  user["websites"].push(website);
-  await user.save();
-  res.status(200).json("Website added successfully.");
 });
 
 app.listen(3000, () => {
