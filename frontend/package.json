@@ -21,7 +21,9 @@
     "react": "18.2.0",
     "react-native": "0.71.8",
     "react-native-paper": "^5.9.1",
-    "react-native-rss-parser": "^1.5.1"
+    "react-native-rss-parser": "^1.5.1",
+    "lottie-react-native": "5.1.4",
+    "react-native-webview": "11.26.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

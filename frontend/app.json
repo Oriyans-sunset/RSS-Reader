@@ -1,10 +1,16 @@
 {
   "expo": {
     "name": "frontend",
-    "slug": "frontend",
+    "slug": "rss-reader",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b3e313ea-8c3a-4d9a-a48d-74876abe9f53"
+      }
+    },
+    "owner": "priyanshu03"
   }
 }
