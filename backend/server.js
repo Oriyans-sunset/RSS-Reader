@@ -109,7 +109,7 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
           response.push(feedObj);
         } catch (error) {
           console.log(error);
-          response.push({ error: "Invalid URL" });
+          response.push({ error: "Invalid URL", name: "Invalid URL" });
         }
       } else {
         continue;
