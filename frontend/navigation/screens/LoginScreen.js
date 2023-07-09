@@ -5,12 +5,14 @@ import { colours } from "../../assets/colours";
 import { TextInput, Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomButton from "../../component/button";
+import LottieView from "lottie-react-native"; // Import LottieView
 
 function LoginScreen({ navigation }) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
   const [isLoading, setLoading] = React.useState(false);
+  const [isImageLoading, setImageLoading] = useState(true);
 
   const image = require("../../assets/images/login-background.jpg");
 
@@ -28,13 +30,16 @@ function LoginScreen({ navigation }) {
   async function handleLogin() {
     try {
       setLoading(true);
-      const response = await fetch("http://192.168.1.7:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "https://rss-reader-backend.onrender.com:3000/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -56,13 +61,16 @@ function LoginScreen({ navigation }) {
   async function handleRegister() {
     try {
       setLoading(true);
-      const response = await fetch("http://192.168.1.7:3000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await fetch(
+        "https://rss-reader-backend.onrender.com:3000/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
 
       // Handle the response from your backend here
       // For example, you can check the response status and navigate to another screen if successful
@@ -82,71 +90,89 @@ function LoginScreen({ navigation }) {
       console.error("Error:", error);
     }
   }
-
+  function showAnimation(value) {
+    setImageLoading(value);
+  }
   return (
     <View style={styles.mainContainer}>
-      <ImageBackground source={image} style={styles.image}>
-        <View style={styles.formBox}>
-          <Text style={{ fontSize: 40, fontFamily: "lobster" }}>
-            Welcome To {"\n"} RSS Reader
-          </Text>
-          <View style={styles.inputBox}>
-            <TextInput
-              label={
-                <Text style={{ fontFamily: "notoSerif" }}>
-                  Enter Email/Username
-                </Text>
-              }
-              value={username}
-              onChangeText={setUsername}
-              mode="flat"
-              underlineStyle={{ width: 0 }}
-              style={{
-                backgroundColor: colours.white,
-                marginBottom: 10,
-                borderRadius: 10,
-              }}
-              theme={{
-                colors: {
-                  primary: colours.blue,
-                },
-              }}
-            />
-            <TextInput
-              label={
-                <Text style={{ fontFamily: "notoSerif" }}>Enter Password</Text>
-              }
-              value={password}
-              onChangeText={setPassword}
-              mode="flat"
-              underlineStyle={{ width: 0 }}
-              secureTextEntry
-              style={{
-                backgroundColor: colours.white,
-                marginBottom: 10,
-                borderRadius: 10,
-              }}
-              theme={{
-                colors: {
-                  primary: colours.blue,
-                },
-              }}
-            />
-            <CustomButton
-              onPress={handleLogin}
-              label="Login"
-              isLoading={isLoading}
-              colour={colours.yellow}
-            />
-            <CustomButton
-              onPress={handleRegister}
-              label="Register"
-              isLoading={isLoading}
-              colour={colours.darkBlue}
-            />
+      {isImageLoading && (
+        <LottieView
+          source={require("../../assets/animations/loading-animation.json")}
+          autoPlay
+          loop
+        />
+      )}
+      {
+        <ImageBackground
+          source={image}
+          style={styles.image}
+          onLoadStart={() => showAnimation(true)}
+          onLoadEnd={() => showAnimation(false)}
+        >
+          <View style={styles.formBox}>
+            <Text style={{ fontSize: 40, fontFamily: "lobster" }}>
+              Welcome To {"\n"} RSS Reader
+            </Text>
+            <View style={styles.inputBox}>
+              <TextInput
+                label={
+                  <Text style={{ fontFamily: "notoSerif" }}>
+                    Enter Email/Username
+                  </Text>
+                }
+                value={username}
+                onChangeText={setUsername}
+                mode="flat"
+                underlineStyle={{ width: 0 }}
+                style={{
+                  backgroundColor: colours.white,
+                  marginBottom: 10,
+                  borderRadius: 10,
+                }}
+                theme={{
+                  colors: {
+                    primary: colours.blue,
+                  },
+                }}
+              />
+              <TextInput
+                label={
+                  <Text style={{ fontFamily: "notoSerif" }}>
+                    Enter Password
+                  </Text>
+                }
+                value={password}
+                onChangeText={setPassword}
+                mode="flat"
+                underlineStyle={{ width: 0 }}
+                secureTextEntry
+                style={{
+                  backgroundColor: colours.white,
+                  marginBottom: 10,
+                  borderRadius: 10,
+                }}
+                theme={{
+                  colors: {
+                    primary: colours.blue,
+                  },
+                }}
+              />
+              <CustomButton
+                onPress={handleLogin}
+                label="Login"
+                isLoading={isLoading}
+                colour={colours.yellow}
+              />
+              <CustomButton
+                onPress={handleRegister}
+                label="Register"
+                isLoading={isLoading}
+                colour={colours.darkBlue}
+              />
+            </View>
           </View>
-        </View>
-      </ImageBackground>
+        </ImageBackground>
+      }
     </View>
   );
 }

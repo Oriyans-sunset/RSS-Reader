@@ -104,6 +104,7 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
           feedObj["name"] = feed.title;
           feedObj["icon"] = feed.image.url;
           feedObj["numberOfArticles"] = feed.items.length;
+          feedObj["url"] = user.websites[i];
           response.push(feedObj);
         } catch (error) {
           console.log(error);
@@ -114,6 +115,36 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
       }
     }
 
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/articles", async (req, res) => {
+  try {
+    console.log(req.body.url);
+
+    let response = [];
+
+    try {
+      const feed = await getRSSFeed(req.body.url);
+      for (let i = 0; i < feed.items.length; i++) {
+        articleObj = {};
+        articleObj["title"] = feed.items[i].title;
+        articleObj["url"] = feed.items[i].id;
+        articleObj["content"] = feed.items[i].content
+          ? feed.items[i].content
+          : feed.items[i].description;
+        articleObj["date"] = feed.items[i].published;
+        response.push(articleObj);
+      }
+    } catch (error) {
+      console.log(error);
+      response.push({ error: "Invalid URL" });
+    }
+    console.log(response);
     res.json(response);
   } catch (error) {
     console.error(error);
