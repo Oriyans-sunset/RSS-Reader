@@ -101,6 +101,7 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
       if (user.websites[i]) {
         try {
           const feed = await getRSSFeed(user.websites[i]);
+          console.log(feed);
           feedObj["name"] = feed.title;
           feedObj["icon"] = feed.image.url;
           feedObj["numberOfArticles"] = feed.items.length;
