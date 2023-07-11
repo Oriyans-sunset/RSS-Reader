@@ -47,7 +47,6 @@ function generateAuthToken(user) {
 }
 
 const ensureAuthenticated = (req, res, next) => {
-  console.log(req.headers.authorization);
   const authHeader = req.headers.authorization;
 
   if (authHeader && authHeader.startsWith("Bearer ")) {
@@ -92,7 +91,7 @@ app.post("/login", passport.authenticate("local"), async (req, res) => {
 
 app.get("/websites", ensureAuthenticated, async (req, res) => {
   try {
-    const user = await User.findOne({ username: "Abr" });
+    const user = await User.findOne({ username: req.body.username });
 
     let response = [];
 
@@ -123,7 +122,7 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
 });
 
 app.put("/websites", ensureAuthenticated, async (req, res) => {
-  const user = await User.findOne({ username: "Abr" });
+  const user = await User.findOne({ username: req.body.username });
   const { website } = req.body;
 
   user["websites"].push(website);
@@ -150,7 +149,6 @@ app.post("/articles", async (req, res) => {
       console.log(error);
       response.push({ error: "Invalid URL" });
     }
-    console.log(response);
     res.json(response);
   } catch (error) {
     console.error(error);
