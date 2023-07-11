@@ -35,12 +35,14 @@ export default function HomeScreen({ navigation }) {
   const [animation, setAnimation] = useState(true);
 
   function getWebsites() {
-    AsyncStorage.getItem("token")
-      .then((token) => {
+    AsyncStorage.multiGet(["token", "username"])
+      .then((stores) => {
         fetch("https://rss-reader-backend.onrender.com/websites", {
+          method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${stores[0][1]}`,
           },
+          body: JSON.stringify({ username: stores[1][1] }),
         })
           .then((response) => {
             if (!response.ok) {

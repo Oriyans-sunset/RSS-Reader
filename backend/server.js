@@ -89,13 +89,13 @@ app.post("/login", passport.authenticate("local"), async (req, res) => {
   res.status(200).json({ token });
 });
 
-app.get("/websites", ensureAuthenticated, async (req, res) => {
+app.post("/websites", ensureAuthenticated, async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
 
     let response = [];
 
-    if (user.websites === null || user.websites.length === 0)
+    if (user.websites === null)
       res.status(200).json({ message: "No websites added yet." });
 
     for (let i = 0; i < user.websites.length; i++) {

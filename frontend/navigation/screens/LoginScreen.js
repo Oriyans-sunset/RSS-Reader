@@ -46,6 +46,7 @@ function LoginScreen({ navigation }) {
         const token = data.token;
         console.log("Login successful.", token);
         await AsyncStorage.setItem("token", token);
+        await AsyncStorage.setItem("username", username);
         navigation.navigate("Home");
         setLoading(false);
       } else {
@@ -79,6 +80,7 @@ function LoginScreen({ navigation }) {
         const token = data.token;
         console.log("Registration successful.");
         await AsyncStorage.setItem("token", token);
+        await AsyncStorage.setItem("username", username);
         navigation.navigate("Home");
         setLoading(false);
       } else if (response.status === 400) {
