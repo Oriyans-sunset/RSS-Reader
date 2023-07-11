@@ -132,7 +132,7 @@ export default function HomeScreen({ navigation }) {
   } else {
     return (
       <PaperProvider>
-        <View edges={["top"]} style={styles.MainContainer}>
+        <View style={styles.MainContainer}>
           <StatusBar barStyle="dark-content" />
           <Appbar.Header
             style={{

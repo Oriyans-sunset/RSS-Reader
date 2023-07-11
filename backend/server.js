@@ -95,6 +95,9 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
 
     let response = [];
 
+    if (user.websites.length === 0)
+      res.status(200).json({ message: "No websites added yet." });
+
     for (let i = 0; i < user.websites.length; i++) {
       let feedObj = {};
       if (user.websites[i]) {
