@@ -89,9 +89,9 @@ app.post("/login", passport.authenticate("local"), async (req, res) => {
   res.status(200).json({ token });
 });
 
-app.post("/websites", ensureAuthenticated, async (req, res) => {
+app.get("/websites", ensureAuthenticated, async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ username: req.user.username });
 
     let response = [];
 
@@ -125,7 +125,7 @@ app.post("/websites", ensureAuthenticated, async (req, res) => {
 });
 
 app.put("/websites", ensureAuthenticated, async (req, res) => {
-  const user = await User.findOne({ username: req.body.username });
+  const user = await User.findOne({ username: req.user.username });
   const { website } = req.body;
 
   user["websites"].push(website);
