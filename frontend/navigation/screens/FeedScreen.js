@@ -3,26 +3,14 @@ import { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
-  ImageBackground,
   FlatList,
-  Text,
   TouchableOpacity,
   StatusBar,
   RefreshControl,
 } from "react-native";
 import { colours } from "../../assets/colours";
-import { WebView } from "react-native-webview";
-import {
-  Modal,
-  Portal,
-  Button,
-  Appbar,
-  FAB,
-  PaperProvider,
-  TextInput,
-  List,
-  Avatar,
-} from "react-native-paper";
+
+import { Appbar, FAB, List } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 
@@ -37,17 +25,15 @@ export default function FeedScreen({ route, navigation }) {
   function getArticles() {
     AsyncStorage.getItem("token")
       .then((token) => {
-        const requestBody = {
-          url: url,
-        };
-
         fetch("https://rss-reader-backend.onrender.com/articles", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
             "content-type": "application/json",
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify({
+            url: url,
+          }),
         })
           .then((response) => {
             if (!response.ok) {
@@ -56,7 +42,6 @@ export default function FeedScreen({ route, navigation }) {
             return response.json();
           })
           .then((data) => {
-            //console.log(data);
             setArticles(data);
             setRefreshing(false);
           })
@@ -90,11 +75,11 @@ export default function FeedScreen({ route, navigation }) {
           borderBottomRightRadius: 3,
           borderBottomWidth: 4,
           borderColor: colours.darkBlue,
-          elevation: 4, // Add elevation for shadow
-          shadowColor: colours.darkBlue, // Customize shadow color if needed
-          shadowOffset: { width: 0, height: 8 }, // Customize shadow offset if needed
-          shadowOpacity: 0.5, // Customize shadow opacity if needed
-          shadowRadius: 4, // Customize shadow radius if needed
+          elevation: 4,
+          shadowColor: colours.darkBlue,
+          shadowOffset: { width: 0, height: 8 },
+          shadowOpacity: 0.5,
+          shadowRadius: 4,
         }}
       >
         <Appbar.Content
@@ -140,11 +125,9 @@ export default function FeedScreen({ route, navigation }) {
                 padding: 10,
                 borderRadius: 10,
                 marginBottom: 10,
-                elevation: 4, // Add elevation for shadow
-                shadowColor: colours.black, // Customize shadow color if needed
-                shadowOffset: { width: 0, height: 2 }, // Customize shadow offset if needed
-                shadowOpacity: 0.3, // Customize shadow opacity if needed
-                shadowRadius: 4, // Customize shadow radius if needed
+                shadowColor: colours.black,
+                shadowOpacity: 0.3,
+                ...shadowBaseStyle,
               }}
             />
           </TouchableOpacity>
@@ -160,6 +143,11 @@ export default function FeedScreen({ route, navigation }) {
     </View>
   );
 }
+const shadowBaseStyle = {
+  elevation: 4,
+  shadowOffset: { width: 0, height: 2 },
+  shadowRadius: 4,
+};
 
 const styles = StyleSheet.create({
   MainContainer: {
@@ -175,10 +163,8 @@ const styles = StyleSheet.create({
     borderColor: colours.peach,
     right: 0,
     bottom: 0,
-    elevation: 4, // Add elevation for shadow
-    shadowColor: colours.peach, // Customize shadow color if needed
-    shadowOffset: { width: 0, height: 2 }, // Customize shadow offset if needed
-    shadowOpacity: 0.9, // Customize shadow opacity if needed
-    shadowRadius: 4, // Customize shadow radius if needed},
+    shadowColor: colours.peach,
+    shadowOpacity: 0.9,
+    ...shadowBaseStyle,
   },
 });

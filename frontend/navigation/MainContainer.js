@@ -8,6 +8,7 @@ import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import FeedScreen from "./screens/FeedScreen";
 import ArticleScreen from "./screens/ArticleScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,11 @@ export default function MainContainer() {
         <Stack.Screen
           name="Article"
           component={ArticleScreen}
+          options={{ headerShown: false, gestureEnabled: true }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
           options={{ headerShown: false, gestureEnabled: true }}
         />
       </Stack.Navigator>

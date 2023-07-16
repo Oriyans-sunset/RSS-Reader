@@ -3,8 +3,6 @@ import { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
-  SafeAreaView,
-  ImageBackground,
   FlatList,
   Text,
   TouchableOpacity,
@@ -15,7 +13,6 @@ import { colours } from "../../assets/colours";
 import {
   Modal,
   Portal,
-  Button,
   Appbar,
   FAB,
   PaperProvider,
@@ -25,15 +22,19 @@ import {
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomButton from "../../component/button";
-import LottieView from "lottie-react-native"; // Import LottieView
+import AnimationView from "../../component/animation";
 
 export default function HomeScreen({ navigation }) {
-  const [visible, setVisible] = React.useState(false);
+  //data hooks
   const [website, setWebsite] = React.useState("");
   const [listData, setListData] = React.useState([]);
+
+  //accessory hooks
+  const [visible, setVisible] = React.useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [animation, setAnimation] = useState(true);
 
+  //gets all the websites from the backend
   function getWebsites() {
     AsyncStorage.getItem("token")
       .then((token) => {
@@ -49,8 +50,8 @@ export default function HomeScreen({ navigation }) {
             return response.json();
           })
           .then((data) => {
-            setAnimation(false);
             setListData(data);
+            setAnimation(false);
             setRefreshing(false);
           })
           .catch((error) => {
@@ -61,34 +62,20 @@ export default function HomeScreen({ navigation }) {
         console.error("Error retrieving token:", error);
       });
   }
+
   const onRefresh = () => {
     setRefreshing(true);
     getWebsites();
   };
-  useEffect(() => {
-    console.log("use effect called");
 
+  useEffect(() => {
     getWebsites();
   }, [website]);
 
-  const containerStyle = {
-    backgroundColor: "white",
-    padding: 20,
-    width: "87%",
-    height: "25%",
-    alignSelf: "center",
-    borderRadius: 10,
-    flexDirection: "column",
-    justifyContent: "space-between",
-  };
-
+  //send the new website to add to the backend
   async function handleAddWebsite() {
-    //send fetch request to backend for feed data
-
     AsyncStorage.getItem("token")
       .then((token) => {
-        console.log(token);
-        console.log(website);
         fetch("https://rss-reader-backend.onrender.com/websites", {
           method: "PUT",
           headers: {
@@ -105,7 +92,6 @@ export default function HomeScreen({ navigation }) {
             return response.json();
           })
           .then((data) => {
-            console.log(data);
             setListData([...listData, website]);
             setWebsite(null);
           })
@@ -117,18 +103,9 @@ export default function HomeScreen({ navigation }) {
         console.error("Error retrieving token:", error);
       });
   }
-  function openFeed(item) {
-    navigation.navigate("Feed", { url: item.url, name: item.name });
-  }
+
   if (animation) {
-    return (
-      <LottieView
-        source={require("../../assets/animations/loading-animation.json")}
-        backgroundColor={colours.lightBlue}
-        autoPlay
-        loop
-      />
-    );
+    return <AnimationView></AnimationView>;
   } else {
     return (
       <PaperProvider>
@@ -141,7 +118,6 @@ export default function HomeScreen({ navigation }) {
               borderBottomRightRadius: 3,
               borderBottomWidth: 4,
               borderColor: colours.darkBlue,
-              elevation: 4, // Add elevation for shadow
               shadowColor: colours.darkBlue, // Customize shadow color if needed
               shadowOffset: { width: 0, height: 8 }, // Customize shadow offset if needed
               shadowOpacity: 0.5, // Customize shadow opacity if needed
@@ -163,7 +139,9 @@ export default function HomeScreen({ navigation }) {
               icon="account-circle"
               size={30}
               color={colours.darkBlue}
-              onPress={() => {}}
+              onPress={() => {
+                navigation.navigate("Profile");
+              }}
             />
           </Appbar.Header>
           <FlatList
@@ -175,7 +153,14 @@ export default function HomeScreen({ navigation }) {
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => openFeed(item)}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("Feed", {
+                    url: item.url,
+                    name: item.name,
+                  })
+                }
+              >
                 <List.Item
                   title={item.name}
                   titleStyle={{
@@ -188,17 +173,15 @@ export default function HomeScreen({ navigation }) {
                   }}
                   description={item.numberOfArticles}
                   style={{
+                    ...shadowBaseStyle,
+                    shadowOpacity: 0.5,
+                    shadowColor: colours.black,
                     backgroundColor: colours.lightBeige,
                     borderColor: colours.black,
                     borderWidth: 2,
                     padding: 10,
                     borderRadius: 10,
                     marginBottom: 10,
-                    elevation: 4, // Add elevation for shadow
-                    shadowColor: colours.black, // Customize shadow color if needed
-                    shadowOffset: { width: 0, height: 2 }, // Customize shadow offset if needed
-                    shadowOpacity: 0.3, // Customize shadow opacity if needed
-                    shadowRadius: 4, // Customize shadow radius if needed
                   }}
                   left={() => (
                     <Avatar.Image
@@ -219,7 +202,7 @@ export default function HomeScreen({ navigation }) {
             <Modal
               visible={visible}
               onDismiss={() => setVisible(false)}
-              contentContainerStyle={containerStyle}
+              contentContainerStyle={styles.containerStyle}
             >
               <View style={styles.inputBoxs}>
                 <TextInput
@@ -233,14 +216,12 @@ export default function HomeScreen({ navigation }) {
                   onChangeText={(website) => setWebsite(website)}
                   textColor={colours.black}
                   style={{
+                    ...shadowBaseStyle,
                     backgroundColor: colours.white,
                     marginBottom: 10,
                     borderRadius: 10,
-                    elevation: 4, // Add elevation for shadow
                     shadowColor: colours.black, // Customize shadow color if needed
-                    shadowOffset: { width: 0, height: 2 }, // Customize shadow offset if needed
-                    shadowOpacity: 0.1, // Customize shadow opacity if needed
-                    shadowRadius: 4, // Customize shadow radius if needed
+                    shadowOpacity: 0.2, // Customize shadow opacity if needed
                   }}
                   theme={{
                     colors: {
@@ -279,13 +260,29 @@ export default function HomeScreen({ navigation }) {
     );
   }
 }
+const shadowBaseStyle = {
+  elevation: 4, // Add elevation for shadow
+  shadowOffset: { width: 0, height: 2 }, // Customize shadow offset if needed
+  shadowRadius: 4, // Customize shadow radius if needed
+};
 
 const styles = StyleSheet.create({
   MainContainer: {
     flex: 1,
     backgroundColor: colours.lightBeige,
   },
+  containerStyle: {
+    backgroundColor: colours.lightBeige,
+    padding: 20,
+    width: "87%",
+    height: "25%",
+    alignSelf: "center",
+    borderRadius: 10,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
   fab: {
+    ...shadowBaseStyle,
     position: "absolute",
     marginRight: 16,
     marginBottom: 25,
@@ -294,11 +291,8 @@ const styles = StyleSheet.create({
     borderColor: colours.peach,
     right: 0,
     bottom: 0,
-    elevation: 4, // Add elevation for shadow
-    shadowColor: colours.peach, // Customize shadow color if needed
-    shadowOffset: { width: 0, height: 2 }, // Customize shadow offset if needed
-    shadowOpacity: 0.9, // Customize shadow opacity if needed
-    shadowRadius: 4, // Customize shadow radius if needed
+    shadowColor: colours.peach,
+    shadowOpacity: 0.9,
   },
   modalButtons: {
     flexDirection: "row",

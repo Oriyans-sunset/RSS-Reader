@@ -4,7 +4,7 @@ import { WebView } from "react-native-webview";
 import { colours } from "../../assets/colours";
 import { FAB } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import LottieView from "lottie-react-native"; // Import LottieView
+import LottieView from "lottie-react-native";
 
 export default function ArticleScreen({ route }) {
   const { url } = route.params;

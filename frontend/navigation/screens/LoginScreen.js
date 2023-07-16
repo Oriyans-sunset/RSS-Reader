@@ -6,12 +6,15 @@ import { TextInput, Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomButton from "../../component/button";
 import LottieView from "lottie-react-native"; // Import LottieView
+import Toast from "react-native-root-toast";
 
 function LoginScreen({ navigation }) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const [isLoading, setLoading] = React.useState(false);
+  const [isLoadingLogin, setLoadingLogin] = React.useState(false);
+  const [isLoadingRegister, setLoadingRegister] = React.useState(false);
+
   const [isImageLoading, setImageLoading] = useState(true);
 
   const image = require("../../assets/images/login-background.jpg");
@@ -29,7 +32,7 @@ function LoginScreen({ navigation }) {
 
   async function handleLogin() {
     try {
-      setLoading(true);
+      setLoadingLogin(true);
       const response = await fetch(
         "https://rss-reader-backend.onrender.com/login",
         {
@@ -48,11 +51,14 @@ function LoginScreen({ navigation }) {
         await AsyncStorage.setItem("token", token);
         await AsyncStorage.setItem("username", username);
         navigation.navigate("Home");
-        setLoading(false);
+        setLoadingLogin(false);
       } else {
         // Handle authentication error
-        console.log("Login failed.");
-        setLoading(false);
+        Toast.show("Login failed. Check your username or password.", {
+          position: Toast.positions.TOP + 15,
+          duration: Toast.durations.LONG,
+        });
+        setLoadingLogin(false);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -61,7 +67,7 @@ function LoginScreen({ navigation }) {
 
   async function handleRegister() {
     try {
-      setLoading(true);
+      setLoadingRegister(true);
       const response = await fetch(
         "https://rss-reader-backend.onrender.com/register",
         {
@@ -73,8 +79,7 @@ function LoginScreen({ navigation }) {
         }
       );
 
-      // Handle the response from your backend here
-      // For example, you can check the response status and navigate to another screen if successful
+      // Handle the response from backend
       if (response.ok) {
         const data = await response.json();
         const token = data.token;
@@ -82,11 +87,14 @@ function LoginScreen({ navigation }) {
         await AsyncStorage.setItem("token", token);
         await AsyncStorage.setItem("username", username);
         navigation.navigate("Home");
-        setLoading(false);
+        setLoadingRegister(false);
       } else if (response.status === 400) {
         // Handle authentication error
-        console.log("User already exists.");
-        setLoading(false);
+        Toast.show("User already exists.", {
+          position: Toast.positions.TOP + 15,
+          duration: Toast.durations.LONG,
+        });
+        setLoadingRegister(false);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -162,13 +170,13 @@ function LoginScreen({ navigation }) {
               <CustomButton
                 onPress={handleLogin}
                 label="Login"
-                isLoading={isLoading}
+                isLoading={isLoadingLogin}
                 colour={colours.yellow}
               />
               <CustomButton
                 onPress={handleRegister}
                 label="Register"
-                isLoading={isLoading}
+                isLoading={isLoadingRegister}
                 colour={colours.darkBlue}
               />
             </View>

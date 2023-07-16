@@ -22,7 +22,6 @@ const CustomButton = ({ onPress, label, isLoading, colour }) => (
       fontFamily: "notoSerifBold",
     }}
     disabled={isLoading}
-    loading={isLoading}
   >
     {isLoading ? <ActivityIndicator color={colours.black} /> : label}
   </Button>
