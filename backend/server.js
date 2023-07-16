@@ -74,7 +74,7 @@ const ensureAuthenticated = (req, res, next) => {
 app.post("/register", async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
 
-  console.log(user, "this is the user");
+  console.log(req.body.username, "this is the user");
   if (user) {
     res.status(400).send("User already exists");
   } else {
