@@ -1,13 +1,89 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+
+//components & styling
 import { StyleSheet, View } from "react-native";
 import { FAB, TextInput, Text } from "react-native-paper";
 import CustomButton from "../../component/button";
 import { colours } from "../../assets/colours";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import * as WebBrowser from "expo-web-browser";
 
 export default function ProfileScreen() {
   const navigationObj = useNavigation();
+
+  const [changedUsername, setChangedUsername] = useState("");
+  const [changedPassword, setChangedPassword] = useState("");
+
+  function handleChangeUsername() {
+    AsyncStorage.getItem("token")
+      .then((token) => {
+        fetch(BACKEND_BASE_URL + "/changeUsername", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ changedUsername }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            setVisible(false);
+            return response.json();
+          })
+          .then((data) => {
+            //ajnds
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error retrieving token:", error);
+      });
+  }
+
+  function handleChangePassword() {
+    AsyncStorage.getItem("token")
+      .then((token) => {
+        fetch(BACKEND_BASE_URL + "/changePassword", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ changedPassword }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            setVisible(false);
+            return response.json();
+          })
+          .then((data) => {
+            //ajnds
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error retrieving token:", error);
+      });
+  }
+
+  function _handlePressButtonAsync(website) {
+    if (website === "Github") {
+      WebBrowser.openBrowserAsync(
+        "https://github.com/Oriyans-sunset/RSS-Reader"
+      );
+    }
+  }
 
   return (
     <View style={styles.MainContainer}>
@@ -44,7 +120,7 @@ export default function ProfileScreen() {
             <Text style={{ fontFamily: "notoSerif" }}>Enter New Password</Text>
           }
           mode="outlined"
-          onChangeText={() => {}}
+          onChangeText={handleChangeUsername}
           textColor={colours.black}
           style={{
             ...shadowBaseStyle,
@@ -61,7 +137,7 @@ export default function ProfileScreen() {
           }}
         />
         <CustomButton
-          onPress={() => {}}
+          onPress={handleChangePassword}
           label="Change Password"
           isLoading={false}
           colour={colours.yellow}
@@ -75,7 +151,7 @@ export default function ProfileScreen() {
           colour={colours.yellow}
         ></CustomButton>
         <CustomButton
-          onPress={() => {}}
+          onPress={() => _handlePressButtonAsync("Github")}
           label="Github"
           isLoading={false}
           colour={colours.yellow}

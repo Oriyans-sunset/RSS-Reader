@@ -74,7 +74,6 @@ const ensureAuthenticated = (req, res, next) => {
 app.post("/register", async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
 
-  console.log(req.body.username, "this is the user");
   if (user) {
     res.status(400).send("User already exists");
   } else {
@@ -158,6 +157,24 @@ app.post("/articles", async (req, res) => {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
+});
+
+app.put("/changeUsername", ensureAuthenticated, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+  const changedUsername = req.body;
+
+  user.username = changedUsername;
+  const updatedUser = await user.save();
+  res.json(updatedUser);
+});
+
+app.put("/changePassword", ensureAuthenticated, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+  const changedPassword = req.body;
+
+  user.password = changedPassword;
+  const updatedUser = await user.save();
+  res.json(updatedUser);
 });
 
 app.listen(3000, () => {

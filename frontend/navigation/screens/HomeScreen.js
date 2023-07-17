@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+
+//components & styling
 import {
   StyleSheet,
   View,
@@ -20,9 +22,14 @@ import {
   List,
   Avatar,
 } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomButton from "../../component/button";
 import AnimationView from "../../component/animation";
+
+//3rd party libraries
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+//envirnoemnt variables
+import { BACKEND_BASE_URL } from "@env";
 
 export default function HomeScreen({ navigation }) {
   //data hooks
@@ -38,7 +45,7 @@ export default function HomeScreen({ navigation }) {
   function getWebsites() {
     AsyncStorage.getItem("token")
       .then((token) => {
-        fetch("https://rss-reader-backend.onrender.com/websites", {
+        fetch(BACKEND_BASE_URL + "/websites", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -76,7 +83,7 @@ export default function HomeScreen({ navigation }) {
   async function handleAddWebsite() {
     AsyncStorage.getItem("token")
       .then((token) => {
-        fetch("https://rss-reader-backend.onrender.com/websites", {
+        fetch(BACKEND_BASE_URL + "/websites", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

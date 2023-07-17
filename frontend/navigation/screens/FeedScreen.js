@@ -1,5 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+
+//components & styling
 import {
   StyleSheet,
   View,
@@ -9,10 +11,14 @@ import {
   RefreshControl,
 } from "react-native";
 import { colours } from "../../assets/colours";
-
 import { Appbar, FAB, List } from "react-native-paper";
+
+//3rd party libraries
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+
+//envirnoemnt variables
+import { BACKEND_BASE_URL } from "@env";
 
 export default function FeedScreen({ route, navigation }) {
   const { url, name } = route.params;
@@ -25,7 +31,7 @@ export default function FeedScreen({ route, navigation }) {
   function getArticles() {
     AsyncStorage.getItem("token")
       .then((token) => {
-        fetch("https://rss-reader-backend.onrender.com/articles", {
+        fetch(BACKEND_BASE_URL + "/articles", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

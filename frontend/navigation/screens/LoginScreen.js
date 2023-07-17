@@ -1,12 +1,19 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+
+//components & styling
 import { StyleSheet, View, ImageBackground, Text } from "react-native";
 import { colours } from "../../assets/colours";
-import { TextInput, Button } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TextInput } from "react-native-paper";
 import CustomButton from "../../component/button";
-import LottieView from "lottie-react-native"; // Import LottieView
+import AnimationView from "../../component/animation";
+
+//3rd party libraries
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-root-toast";
+
+//envirnoemnt variables
+import { BACKEND_BASE_URL } from "@env";
 
 function LoginScreen({ navigation }) {
   const [username, setUsername] = React.useState("");
@@ -33,16 +40,13 @@ function LoginScreen({ navigation }) {
   async function handleLogin() {
     try {
       setLoadingLogin(true);
-      const response = await fetch(
-        "https://rss-reader-backend.onrender.com/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const response = await fetch(BACKEND_BASE_URL + "/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -68,16 +72,25 @@ function LoginScreen({ navigation }) {
   async function handleRegister() {
     try {
       setLoadingRegister(true);
-      const response = await fetch(
-        "https://rss-reader-backend.onrender.com/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      if (username.length < 4 || password.length < 4) {
+        Toast.show(
+          "Username and password must be at least 4 characters long.",
+          {
+            position: Toast.positions.TOP + 15,
+            duration: Toast.durations.LONG,
+          }
+        );
+        setLoadingRegister(false);
+        return;
+      }
+
+      const response = await fetch(BACKEND_BASE_URL + "/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
       // Handle the response from backend
       if (response.ok) {
@@ -105,13 +118,7 @@ function LoginScreen({ navigation }) {
   }
   return (
     <View style={styles.mainContainer}>
-      {isImageLoading && (
-        <LottieView
-          source={require("../../assets/animations/loading-animation.json")}
-          autoPlay
-          loop
-        />
-      )}
+      {isImageLoading && <AnimationView></AnimationView>}
       {
         <ImageBackground
           source={image}
