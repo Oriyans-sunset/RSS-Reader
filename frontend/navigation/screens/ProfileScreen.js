@@ -10,6 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as WebBrowser from "expo-web-browser";
+import { BACKEND_BASE_URL } from "@env";
 
 export default function ProfileScreen() {
   const navigationObj = useNavigation();
@@ -92,8 +93,9 @@ export default function ProfileScreen() {
           label={
             <Text style={{ fontFamily: "notoSerif" }}>Enter New Username</Text>
           }
+          onChangeText={setChangedUsername}
+          value={changedUsername}
           mode="outlined"
-          onChangeText={() => {}}
           textColor={colours.black}
           style={{
             ...shadowBaseStyle,
@@ -110,7 +112,7 @@ export default function ProfileScreen() {
           }}
         />
         <CustomButton
-          onPress={() => {}}
+          onPress={handleChangeUsername}
           label="Change Username"
           isLoading={false}
           colour={colours.yellow}
@@ -120,7 +122,8 @@ export default function ProfileScreen() {
             <Text style={{ fontFamily: "notoSerif" }}>Enter New Password</Text>
           }
           mode="outlined"
-          onChangeText={handleChangeUsername}
+          onChangeText={setChangedPassword}
+          value={changedPassword}
           textColor={colours.black}
           style={{
             ...shadowBaseStyle,

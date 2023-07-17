@@ -161,7 +161,7 @@ app.post("/articles", async (req, res) => {
 
 app.put("/changeUsername", ensureAuthenticated, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
-  const changedUsername = req.body;
+  const changedUsername = req.body.changedUsername;
 
   user.username = changedUsername;
   const updatedUser = await user.save();
@@ -170,7 +170,7 @@ app.put("/changeUsername", ensureAuthenticated, async (req, res) => {
 
 app.put("/changePassword", ensureAuthenticated, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
-  const changedPassword = req.body;
+  const changedPassword = req.body.changedPassword;
 
   user.password = changedPassword;
   const updatedUser = await user.save();
