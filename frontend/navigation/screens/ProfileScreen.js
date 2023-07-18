@@ -33,7 +33,6 @@ export default function ProfileScreen() {
             if (!response.ok) {
               throw new Error("Network response was not ok");
             }
-            setVisible(false);
             return response.json();
           })
           .then((data) => {
@@ -63,7 +62,6 @@ export default function ProfileScreen() {
             if (!response.ok) {
               throw new Error("Network response was not ok");
             }
-            setVisible(false);
             return response.json();
           })
           .then((data) => {

@@ -163,6 +163,9 @@ app.put("/changeUsername", ensureAuthenticated, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
   const changedUsername = req.body.changedUsername;
 
+  // Update req.user with the new username
+  req.user.username = changedUsername;
+
   user.username = changedUsername;
   const updatedUser = await user.save();
   res.json(updatedUser);
