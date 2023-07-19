@@ -6,6 +6,7 @@ async function getRSSFeed(feedURL) {
     const response = await fetch(feedURL);
     const responseData = await response.text();
     const rss = await parser.parseURL(responseData);
+    console.log(feed);
     return rss;
   } catch (error) {
     console.error("Error:", error);

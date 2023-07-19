@@ -92,6 +92,8 @@ app.post("/login", passport.authenticate("local"), async (req, res) => {
 app.get("/websites", ensureAuthenticated, async (req, res) => {
   try {
     const user = await User.findOne({ username: req.user.username });
+    const feed = await getRSSFeed("https://www.cbc.ca/cmlink/rss-topstories");
+    res.status(200).json({ message: "No websites added yet." });
 
     let response = [];
 
@@ -147,15 +149,14 @@ app.post("/articles", async (req, res) => {
     let response = [];
     try {
       const feed = await getRSSFeed(req.body.url);
-      console.log(feed);
       for (let i = 0; i < feed.items.length; i++) {
         articleObj = {};
         articleObj["title"] = feed.items[i].title;
-        articleObj["url"] = feed.items[i].link;
+        articleObj["url"] = feed.items[i].id;
         articleObj["content"] = feed.items[i].content
           ? feed.items[i].content
-          : feed.items[i].title;
-        articleObj["date"] = feed.items[i].pubDate;
+          : feed.items[i].description;
+        articleObj["date"] = feed.items[i].published;
         response.push(articleObj);
       }
     } catch (error) {
