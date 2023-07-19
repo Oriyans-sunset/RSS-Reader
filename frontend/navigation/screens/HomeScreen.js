@@ -77,7 +77,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     getWebsites();
-  }, [listData]);
+  }, [website]);
 
   //send the new website to add to the backend
   async function handleAddWebsite() {

@@ -136,7 +136,7 @@ app.put("/websites", ensureAuthenticated, async (req, res) => {
 app.put("/websiteDelete", ensureAuthenticated, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
   const { url } = req.body;
-  consooe.log(url);
+  console.log(url);
   user["websites"].remove(url);
   await user.save();
   res.status(200).json("Website removed successfully.");
