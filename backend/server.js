@@ -136,7 +136,7 @@ app.put("/websites", ensureAuthenticated, async (req, res) => {
 app.put("/websiteDelete", ensureAuthenticated, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
   const { url } = req.body;
-  console.log(url);
+
   user["websites"].remove(url);
   await user.save();
   res.status(200).json("Website removed successfully.");
@@ -147,6 +147,7 @@ app.post("/articles", async (req, res) => {
     let response = [];
     try {
       const feed = await getRSSFeed(req.body.url);
+      console.log(feed);
       for (let i = 0; i < feed.items.length; i++) {
         articleObj = {};
         articleObj["title"] = feed.items[i].title;

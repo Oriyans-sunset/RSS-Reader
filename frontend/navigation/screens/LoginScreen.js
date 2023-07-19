@@ -11,6 +11,7 @@ import AnimationView from "../../component/animation";
 //3rd party libraries
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-root-toast";
+import * as Haptics from "expo-haptics";
 
 //envirnoemnt variables
 import { BACKEND_BASE_URL } from "@env";
@@ -38,6 +39,8 @@ function LoginScreen({ navigation }) {
   }, []);
 
   async function handleLogin() {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
     try {
       setLoadingLogin(true);
       const response = await fetch(BACKEND_BASE_URL + "/login", {
@@ -61,7 +64,9 @@ function LoginScreen({ navigation }) {
         Toast.show("Login failed. Check your username or password.", {
           position: Toast.positions.TOP + 15,
           duration: Toast.durations.LONG,
+          backgroundColor: colours.red,
         });
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         setLoadingLogin(false);
       }
     } catch (error) {
@@ -70,6 +75,7 @@ function LoginScreen({ navigation }) {
   }
 
   async function handleRegister() {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     try {
       setLoadingRegister(true);
       if (username.length < 4 || password.length < 4) {
@@ -78,8 +84,10 @@ function LoginScreen({ navigation }) {
           {
             position: Toast.positions.TOP + 15,
             duration: Toast.durations.LONG,
+            backgroundColor: colours.red,
           }
         );
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         setLoadingRegister(false);
         return;
       }
@@ -106,7 +114,9 @@ function LoginScreen({ navigation }) {
         Toast.show("User already exists.", {
           position: Toast.positions.TOP + 15,
           duration: Toast.durations.LONG,
+          backgroundColor: colours.red,
         });
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         setLoadingRegister(false);
       }
     } catch (error) {

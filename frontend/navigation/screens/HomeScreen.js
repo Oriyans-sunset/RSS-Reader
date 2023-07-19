@@ -24,9 +24,11 @@ import {
 } from "react-native-paper";
 import CustomButton from "../../component/button";
 import AnimationView from "../../component/animation";
+import Toast from "react-native-root-toast";
 
 //3rd party libraries
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Haptics from "expo-haptics";
 
 //envirnoemnt variables
 import { BACKEND_BASE_URL } from "@env";
@@ -81,6 +83,16 @@ export default function HomeScreen({ navigation }) {
 
   //send the new website to add to the backend
   async function handleAddWebsite() {
+    if (website === null || website.length === 0) {
+      Toast.show("URL cannot be blank.", {
+        position: Toast.positions.TOP + 15,
+        duration: Toast.durations.LONG,
+        backgroundColor: colours.red,
+        opacity: 1,
+      });
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
     AsyncStorage.getItem("token")
       .then((token) => {
         fetch(BACKEND_BASE_URL + "/websites", {
@@ -101,6 +113,7 @@ export default function HomeScreen({ navigation }) {
           .then((data) => {
             setListData([...listData, website]);
             setWebsite(null);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -274,7 +287,10 @@ export default function HomeScreen({ navigation }) {
 
               <View style={styles.modalButtons}>
                 <CustomButton
-                  onPress={() => setVisible(false)}
+                  onPress={() => {
+                    setVisible(false);
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  }}
                   label="Cancel"
                   isLoading={false}
                   colour={colours.darkBlue}
@@ -291,7 +307,10 @@ export default function HomeScreen({ navigation }) {
           <FAB
             icon="plus"
             style={styles.fab}
-            onPress={() => setVisible(true)}
+            onPress={() => {
+              setVisible(true);
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            }}
             color={colours.black}
             backgroundColor={colours.peach}
           />

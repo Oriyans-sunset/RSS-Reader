@@ -8,6 +8,9 @@ import { FAB } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import AnimationView from "../../component/animation";
 
+//3rd party libraries
+import * as Haptics from "expo-haptics";
+
 export default function ArticleScreen({ route }) {
   const { url } = route.params;
   const navigation = useNavigation();
@@ -23,7 +26,10 @@ export default function ArticleScreen({ route }) {
       <FAB
         icon="arrow-left"
         style={styles.fab}
-        onPress={() => navigation.goBack()}
+        onPress={() => {
+          navigation.goBack();
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        }}
         color={colours.black}
         backgroundColor={colours.peach}
       />

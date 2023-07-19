@@ -16,6 +16,7 @@ import { Appbar, FAB, List } from "react-native-paper";
 //3rd party libraries
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import * as Haptics from "expo-haptics";
 
 //envirnoemnt variables
 import { BACKEND_BASE_URL } from "@env";
@@ -142,7 +143,10 @@ export default function FeedScreen({ route, navigation }) {
       <FAB
         icon="arrow-left"
         style={styles.fab}
-        onPress={() => navigationObject.goBack()}
+        onPress={() => {
+          navigationObject.goBack();
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        }}
         color={colours.black}
         backgroundColor={colours.peach}
       />

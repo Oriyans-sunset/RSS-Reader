@@ -27,7 +27,8 @@
     "react-native-root-toast": "^3.4.1",
     "react-native-rss-parser": "^1.5.1",
     "react-native-webview": "11.26.0",
-    "expo-blur": "~12.2.2"
+    "expo-blur": "~12.2.2",
+    "expo-haptics": "~12.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
