@@ -133,6 +133,15 @@ app.put("/websites", ensureAuthenticated, async (req, res) => {
   res.status(200).json("Website added successfully.");
 });
 
+app.put("/websiteDelete", ensureAuthenticated, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+  const { url } = req.body;
+  consooe.log(url);
+  user["websites"].remove(url);
+  await user.save();
+  res.status(200).json("Website removed successfully.");
+});
+
 app.post("/articles", async (req, res) => {
   try {
     let response = [];
@@ -167,15 +176,6 @@ app.put("/changeUsername", ensureAuthenticated, async (req, res) => {
   req.user.username = changedUsername;
 
   user.username = changedUsername;
-  const updatedUser = await user.save();
-  res.json(updatedUser);
-});
-
-app.put("/changePassword", ensureAuthenticated, async (req, res) => {
-  const user = await User.findOne({ username: req.user.username });
-  const changedPassword = req.body.changedPassword;
-
-  user.password = changedPassword;
   const updatedUser = await user.save();
   res.json(updatedUser);
 });

@@ -11,6 +11,12 @@
         "projectId": "b3e313ea-8c3a-4d9a-a48d-74876abe9f53"
       }
     },
-    "owner": "priyanshu03"
+    "owner": "priyanshu03",
+    "icon": "./assets/images/logo.png",
+    "splash": {
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#a9e8f5"
+    }
   }
 }

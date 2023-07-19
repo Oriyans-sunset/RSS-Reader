@@ -77,7 +77,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     getWebsites();
-  }, [website]);
+  }, [listData]);
 
   //send the new website to add to the backend
   async function handleAddWebsite() {
@@ -101,6 +101,39 @@ export default function HomeScreen({ navigation }) {
           .then((data) => {
             setListData([...listData, website]);
             setWebsite(null);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error retrieving token:", error);
+      });
+  }
+
+  function handleDeleteWebsite(url, name) {
+    AsyncStorage.getItem("token")
+      .then((token) => {
+        fetch(BACKEND_BASE_URL + "/websiteDelete", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ url }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            setVisible(false);
+            return response.json();
+          })
+          .then((data) => {
+            const updatedListData = listData.filter(
+              (item) => item.name !== name
+            );
+            setListData(updatedListData);
           })
           .catch((error) => {
             console.error("Error:", error);
@@ -167,6 +200,7 @@ export default function HomeScreen({ navigation }) {
                     name: item.name,
                   })
                 }
+                onLongPress={() => handleDeleteWebsite(item.url, item.name)}
               >
                 <List.Item
                   title={item.name}

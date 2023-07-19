@@ -47,35 +47,6 @@ export default function ProfileScreen() {
       });
   }
 
-  function handleChangePassword() {
-    AsyncStorage.getItem("token")
-      .then((token) => {
-        fetch(BACKEND_BASE_URL + "/changePassword", {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ changedPassword }),
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Network response was not ok");
-            }
-            return response.json();
-          })
-          .then((data) => {
-            //ajnds
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error retrieving token:", error);
-      });
-  }
-
   function _handlePressButtonAsync(website) {
     if (website === "Github") {
       WebBrowser.openBrowserAsync(
@@ -112,34 +83,6 @@ export default function ProfileScreen() {
         <CustomButton
           onPress={handleChangeUsername}
           label="Change Username"
-          isLoading={false}
-          colour={colours.yellow}
-        ></CustomButton>
-        <TextInput
-          label={
-            <Text style={{ fontFamily: "notoSerif" }}>Enter New Password</Text>
-          }
-          mode="outlined"
-          onChangeText={setChangedPassword}
-          value={changedPassword}
-          textColor={colours.black}
-          style={{
-            ...shadowBaseStyle,
-            backgroundColor: colours.white,
-            marginBottom: 10,
-            borderRadius: 10,
-            shadowColor: colours.black, // Customize shadow color if needed
-            shadowOpacity: 0.2, // Customize shadow opacity if needed
-          }}
-          theme={{
-            colors: {
-              primary: colours.yellow,
-            },
-          }}
-        />
-        <CustomButton
-          onPress={handleChangePassword}
-          label="Change Password"
           isLoading={false}
           colour={colours.yellow}
         ></CustomButton>
@@ -187,13 +130,13 @@ const styles = StyleSheet.create({
     backgroundColor: colours.lightBeige,
     borderRadius: 10,
     width: "100%",
-    height: "60%",
+    height: "30%",
     justifyContent: "space-evenly",
     padding: 20,
   },
   aboutSection: {
     width: "100%",
-    height: "20%",
+    height: "25%",
     justifyContent: "space-between",
     alignItems: "center",
   },
