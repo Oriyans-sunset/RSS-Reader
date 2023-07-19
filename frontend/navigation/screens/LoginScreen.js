@@ -65,6 +65,7 @@ function LoginScreen({ navigation }) {
           position: Toast.positions.TOP + 15,
           duration: Toast.durations.LONG,
           backgroundColor: colours.red,
+          opacity: 1,
         });
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         setLoadingLogin(false);
@@ -85,6 +86,7 @@ function LoginScreen({ navigation }) {
             position: Toast.positions.TOP + 15,
             duration: Toast.durations.LONG,
             backgroundColor: colours.red,
+            opacity: 1,
           }
         );
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
@@ -115,6 +117,7 @@ function LoginScreen({ navigation }) {
           position: Toast.positions.TOP + 15,
           duration: Toast.durations.LONG,
           backgroundColor: colours.red,
+          opacity: 1,
         });
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
         setLoadingRegister(false);
