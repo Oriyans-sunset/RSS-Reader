@@ -103,12 +103,6 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
       if (user.websites[i]) {
         try {
           const feed = await getRSSFeed(user.websites[i]);
-          if (feed === undefined) {
-            response.push({ error: "Invalid URL", name: "Invalid RL" });
-            user["websites"].remove(user.websites[i]);
-            await user.save();
-            continue;
-          }
           feedObj["name"] = feed.title;
           feedObj["icon"] = feed.image ? feed.image.url[0] : feed.icon;
           feedObj["numberOfArticles"] = feed.items.length;
@@ -116,7 +110,7 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
           response.push(feedObj);
         } catch (error) {
           console.log(error);
-          response.push({ error: "Invalid URL", name: "Invalid URL" });
+          response.push({ error: "Invalid URL", name: "Invalid RL" });
         }
       } else {
         continue;
