@@ -154,11 +154,15 @@ app.post("/articles", async (req, res) => {
       for (let i = 0; i < feed.items.length; i++) {
         articleObj = {};
         articleObj["title"] = feed.items[i].title;
-        articleObj["url"] = feed.items[i].id;
+        articleObj["url"] = feed.items[i].id
+          ? feed.items[i].id
+          : feed.items[i].link;
         articleObj["content"] = feed.items[i].content
           ? feed.items[i].content
           : feed.items[i].description;
-        articleObj["date"] = feed.items[i].published;
+        articleObj["date"] = feed.items[i].published
+          ? feed.items[i].published
+          : feed.items[i].pubDate;
         response.push(articleObj);
       }
     } catch (error) {
