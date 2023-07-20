@@ -9,10 +9,6 @@ require("isomorphic-fetch");
 
 async function getRSSFeed(feedURL) {
   try {
-    parser.parseURL(feedURL, function (err, feed) {
-      console.log(feed);
-      return feed;
-    });
     const rss = await parser.parseURL(feedURL);
     return rss;
   } catch (error) {
