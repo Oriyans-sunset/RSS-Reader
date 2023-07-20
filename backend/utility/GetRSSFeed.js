@@ -1,12 +1,19 @@
 const Parser = require("rss-parser");
-let parser = new Parser();
+let parser = new Parser({
+  customFields: {
+    feed: ["image"],
+  },
+});
+
 require("isomorphic-fetch");
+
 async function getRSSFeed(feedURL) {
   try {
-    const response = await fetch(feedURL);
-    const responseData = await response.text();
-    const rss = await parser.parseURL(responseData);
-    console.log(rss);
+    parser.parseURL(feedURL, function (err, feed) {
+      console.log(feed);
+      return feed;
+    });
+    const rss = await parser.parseURL(feedURL);
     return rss;
   } catch (error) {
     console.error("Error:", error);
