@@ -108,7 +108,7 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
             continue;
           }
           feedObj["name"] = feed.title;
-          feedObj["icon"] = feed.image.url[0] ? feed.image.url[0] : feed.icon;
+          feedObj["icon"] = feed.image ? feed.image.url[0] : feed.icon;
           feedObj["numberOfArticles"] = feed.items.length;
           feedObj["url"] = user.websites[i];
           response.push(feedObj);
