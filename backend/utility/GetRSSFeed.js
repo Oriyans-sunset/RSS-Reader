@@ -1,7 +1,7 @@
 const Parser = require("rss-parser");
 let parser = new Parser({
   customFields: {
-    feed: ["image"],
+    feed: ["image", "icon"],
   },
 });
 
