@@ -104,7 +104,7 @@ app.get("/websites", ensureAuthenticated, async (req, res) => {
         try {
           const feed = await getRSSFeed(user.websites[i]);
           if (feed === undefined) {
-            response.push({ error: "Invalid URL", name: "Invalid URL" });
+            response.push({ error: "Invalid URL", name: "Invalid RL" });
             continue;
           }
           feedObj["name"] = feed.title;
