@@ -146,6 +146,7 @@ export default function HomeScreen({ navigation }) {
             const updatedListData = listData.filter(
               (item) => item.name !== name
             );
+            Haptics.notificationAsync(Haptics.ImpactFeedbackStyle.Medium);
             setListData(updatedListData);
           })
           .catch((error) => {
@@ -239,7 +240,7 @@ export default function HomeScreen({ navigation }) {
                   }}
                   left={() => (
                     <Avatar.Image
-                      resizeMode="contain"
+                      resizeMode="center"
                       source={{
                         uri: item.icon
                           ? item.icon
