@@ -8,7 +8,6 @@ const sessionStore = new expressSession.MemoryStore();
 const cors = require("cors");
 const getRSSFeed = require("./utility/GetRSSFeed");
 const jwt = require("jsonwebtoken");
-import { JWT_TOKEN_KEY } from "@env";
 
 connectMongoose();
 initializePassport(passport);
@@ -85,7 +84,6 @@ app.post("/register", async (req, res) => {
 });
 
 app.post("/login", passport.authenticate("local"), async (req, res) => {
-  console.log(JWT_TOKEN_KEY);
   const token = generateAuthToken(req.user);
 
   res.status(200).json({ token });
