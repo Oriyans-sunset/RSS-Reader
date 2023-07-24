@@ -56,7 +56,7 @@ function LoginScreen({ navigation }) {
         const token = data.token;
         console.log("Login successful.");
         await AsyncStorage.setItem("token", token);
-
+        await AsyncStorage.setItem("username", username);
         navigation.navigate("Home");
         setLoadingLogin(false);
       } else {
@@ -108,7 +108,8 @@ function LoginScreen({ navigation }) {
         const token = data.token;
         console.log("Registration successful.");
         await AsyncStorage.setItem("token", token);
-
+        await AsyncStorage.setItem("username", username);
+        navigation.navigate("Home");
         setLoadingRegister(false);
       } else if (response.status === 400) {
         // Handle authentication error
