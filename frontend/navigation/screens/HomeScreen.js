@@ -257,7 +257,7 @@ export default function HomeScreen({ navigation }) {
             <Modal
               visible={visible}
               onDismiss={() => setVisible(false)}
-              contentContainerStyle={styles.containerStyle}
+              contentContainerStyle={styles.modalContainer}
             >
               <View style={styles.inputBoxs}>
                 <TextInput
@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colours.lightBeige,
   },
-  containerStyle: {
+  modalContainer: {
     backgroundColor: colours.lightBeige,
     padding: 20,
     width: "87%",

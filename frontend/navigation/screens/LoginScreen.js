@@ -32,7 +32,7 @@ function LoginScreen({ navigation }) {
       const token = await AsyncStorage.getItem("token");
       if (token) {
         // Token exists, navigate to home screen
-        //navigation.navigate("Home");
+        navigation.navigate("Home");
       }
     }
     checkIfLoggedIn();

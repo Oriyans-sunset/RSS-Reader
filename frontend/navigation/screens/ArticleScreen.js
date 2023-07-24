@@ -10,6 +10,7 @@ import AnimationView from "../../component/animation";
 
 //3rd party libraries
 import * as Haptics from "expo-haptics";
+import Toast from "react-native-root-toast";
 
 export default function ArticleScreen({ route }) {
   const { url } = route.params;
@@ -21,6 +22,14 @@ export default function ArticleScreen({ route }) {
         source={{ uri: url }}
         style={styles.webView}
         renderLoading={() => <AnimationView></AnimationView>}
+        onLoadStart={() => {
+          Toast.show("This might take some time.", {
+            position: Toast.positions.TOP + 15,
+            duration: Toast.durations.LONG,
+            backgroundColor: colours.black,
+            opacity: 1,
+          });
+        }}
         startInLoadingState
       />
       <FAB
