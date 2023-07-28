@@ -3,6 +3,9 @@ RSS Readder is an app where you can collect all your RSS channels in one place. 
 
 Tech stack: [React Native](https://reactnative.dev/)(with Expo CLI), [Express](https://expressjs.com/), [MongoDB](https://www.mongodb.com/), [PassportJS](https://www.passportjs.org/) 
 
+Android APK([link](https://expo.dev/accounts/priyanshu03/projects/rss-reader/builds/1b1160e6-94e7-4ba0-8c07-f347ef9b0548))
+Note: Please enable _installation from unkown sources_ in Android settings. 
+
 # Features: 
 - Add RSS feed URL and access all the articles.
 - Sign-in to save all your feeds.
